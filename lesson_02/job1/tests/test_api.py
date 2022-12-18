@@ -47,10 +47,12 @@ class GetSalesTestCase(TestCase):
 
         requests.get = mock.MagicMock(side_effect=response)
         result = get_sales('2022-12-15', auth_token=TEST_TOKEN)
+        requests.get.assert_called_with('https://fake-api-vycpfa6oca-uc.a.run.app/sales', params={'date': '2022-12-15', 'page': 3}, headers={'Authorization': TEST_TOKEN})
         self.assertEqual(len(result), 6)
 
     def testNoneJsonResponse(self):
         requests.get = mock.MagicMock(return_value=MockResponse(None))
+
         result = get_sales('2022-12-15', auth_token=TEST_TOKEN)
         self.assertEqual(len(result), 0)
 

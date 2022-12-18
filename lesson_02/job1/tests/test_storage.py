@@ -5,7 +5,7 @@ Tests api.py
 import json
 import os.path
 from unittest import TestCase, mock
-
+from lesson_02.job1.tests.common import remove_dir
 from lesson_02.job1.storage import save_to_disk
 
 class SaveToDiskTestCase(TestCase):
@@ -27,9 +27,7 @@ class SaveToDiskTestCase(TestCase):
         """
         Here we just delete all the temporary paths etc.
         """
-        for f in os.listdir(self.temp_dir):
-            os.remove(os.path.join(self.temp_dir, f))
-        os.rmdir(self.temp_dir)
+        remove_dir(self.temp_dir)
 
     def read(self, path):
         data = None
@@ -55,7 +53,7 @@ class SaveToDiskTestCase(TestCase):
                 "old_key3": "value3"
             }]
         path = os.path.join(self.temp_dir, 'test.json')
-        os.makedirs(self.temp_dir)
+        os.makedirs(self.temp_dir, exist_ok=True)
         with open(path, 'wt+') as f:
             json.dump(old_data, f)
 
