@@ -17,6 +17,7 @@ schema = {
 
 parsed_schema = parse_schema(schema)
 
+
 def convert_all_to_avro(input_dir, output_dir):
     os.makedirs(output_dir, exist_ok=True)
     for f in os.listdir(input_dir):
@@ -25,11 +26,12 @@ def convert_all_to_avro(input_dir, output_dir):
         output_path = os.path.join(output_dir, name+'.avro')
         json_to_avro(input_path, output_path)
 
+
 def json_to_avro(input_path, output_path):
     if os.path.exists(output_path):
-        os.remove(output_path) #remove file if exists
+        os.remove(output_path)  # remove file if exists
 
     with open(output_path, 'wb+') as output:
-        with open(input_path, 'rt') as input:
-            records = json.load(input)
+        with open(input_path, 'rt') as _input:
+            records = json.load(_input)
             writer(output, parsed_schema, records)

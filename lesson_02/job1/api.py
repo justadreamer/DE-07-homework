@@ -1,6 +1,10 @@
-API_URL = 'https://fake-api-vycpfa6oca-uc.a.run.app/'
 import os
 import requests
+
+
+API_URL = 'https://fake-api-vycpfa6oca-uc.a.run.app/'
+
+
 def get_sales(date: str, auth_token: str):
     """
     gets data from the API
@@ -11,8 +15,9 @@ def get_sales(date: str, auth_token: str):
     page = 0
     result = []
     while True:
-        page+=1
-        response = requests.get(os.path.join(API_URL, 'sales'), params={'date': date, 'page': page}, headers={'Authorization': auth_token})
+        page += 1
+        response = requests.get(os.path.join(API_URL, 'sales'), params={'date': date, 'page': page},
+                                headers={'Authorization': auth_token})
         if response.status_code == 200:
             # print(response.url)
             # print(response)

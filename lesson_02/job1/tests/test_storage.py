@@ -1,12 +1,9 @@
-"""
-Tests api.py
-# TODO: write tests
-"""
 import json
 import os.path
-from unittest import TestCase, mock
+from unittest import TestCase
 from lesson_02.job1.tests.common import remove_dir
 from lesson_02.job1.storage import save_to_disk
+
 
 class SaveToDiskTestCase(TestCase):
     temp_dir = '/tmp/de07/tests/raw/sales'
@@ -29,19 +26,19 @@ class SaveToDiskTestCase(TestCase):
         """
         remove_dir(self.temp_dir)
 
-    def read(self, path):
-        data = None
+    @staticmethod
+    def read(path):
         with open(path, 'rt+') as f:
             data = json.load(f)
         return data
 
     def testWriteCorrectData(self):
-        #verify writing to the path
+        # verify writing to the path
         path = os.path.join(self.temp_dir, 'test.json')
         save_to_disk(self.test_data, path)
-        readData = self.read(path)
-        self.assertIsNotNone(readData)
-        self.assertEqual(readData, self.test_data)
+        read_data = self.read(path)
+        self.assertIsNotNone(read_data)
+        self.assertEqual(read_data, self.test_data)
 
     def testOverwriteData(self):
         """
@@ -60,6 +57,6 @@ class SaveToDiskTestCase(TestCase):
         self.assertEqual(old_data, self.read(path))
 
         save_to_disk(self.test_data, path)
-        readData = self.read(path)
-        self.assertNotEqual(old_data, readData)
-        self.assertEqual(self.test_data, readData)
+        read_data = self.read(path)
+        self.assertNotEqual(old_data, read_data)
+        self.assertEqual(self.test_data, read_data)

@@ -1,28 +1,19 @@
-"""
-Tests for main.py
-# TODO: write tests
-"""
 import os
 from unittest import TestCase, mock
-
-import lesson_02.job1.tests.common
 from lesson_02.job1.tests.common import TEST_TOKEN
 from lesson_02.job1 import main
 
 
 class MainFunctionTestCase(TestCase):
-
     @classmethod
     def setUpClass(cls) -> None:
         main.app.testing = True
         cls.client = main.app.test_client()
 
-
     @mock.patch('lesson_02.job1.api.get_sales')
     def test_return_400_date_param_missed_path_param_missed(
             self,
-            get_sales_mock: mock.MagicMock
-        ):
+            get_sales_mock: mock.MagicMock):
         """
         Raise 400 HTTP code when no 'date' param
         """
@@ -39,7 +30,7 @@ class MainFunctionTestCase(TestCase):
     def test_return_400_raw_dir_param_missed(self):
         resp = self.client.post(
             '/',
-            json = {
+            json={
                 'date': '2022-08-09'
             },
         )

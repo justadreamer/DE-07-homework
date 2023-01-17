@@ -5,11 +5,12 @@ and trigger business logic layer
 import os
 from flask import Flask, request
 from flask import typing as flask_typing
-
 from lesson_02.job1 import api
 from lesson_02.job1 import storage
 
+
 AUTH_TOKEN = os.environ.get("API_AUTH_TOKEN")
+
 
 if not AUTH_TOKEN:
     print("API_AUTH_TOKEN environment variable must be set")
@@ -46,7 +47,6 @@ def main() -> flask_typing.ResponseReturnValue:
     json_content = api.get_sales(date=date, auth_token=AUTH_TOKEN)
     path = os.path.join(raw_dir, date + '.json')
     storage.save_to_disk(json_content, path)
-
 
     return {
                "message": "Data retrieved successfully from API",

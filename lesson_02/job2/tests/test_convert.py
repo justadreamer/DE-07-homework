@@ -4,11 +4,12 @@ Tests api.py
 """
 import json
 import os
-from unittest import TestCase, mock
+from unittest import TestCase
 from lesson_02.job1.tests.common import remove_dir
 from lesson_02.job2.convert import json_to_avro, convert_all_to_avro
 from lesson_02.job2.convert import parsed_schema
 import fastavro
+
 
 class ConvertTestCase(TestCase):
     raw_dir = '/tmp/de07/tests/raw/sales/2022-12-18'
@@ -61,9 +62,9 @@ class ConvertTestCase(TestCase):
         remove_dir(self.raw_dir)
         remove_dir(self.stg_dir)
 
-    def read(self, path):
-        records = []
-        with open(self.outpath1, "rb") as f:
+    @staticmethod
+    def read(path):
+        with open(path, "rb") as f:
             records = list(fastavro.reader(f, parsed_schema))
         return records
 
@@ -84,21 +85,17 @@ class ConvertTestCase(TestCase):
         self.assertEqual(records, self.test_data)
 
     def testOverwrite(self):
-
-        old_test_data = [
-        {
+        old_test_data = [{
             "client": "Kevin Mullen",
             "price": 998,
             "product": "Phone",
             "purchase_date": "2022-08-09"
-        },
-        {
+        }, {
             "client": "Elizabeth Brady",
             "price": 394,
             "product": "Microwave oven",
             "purchase_date": "2022-08-09"
-        }
-            ]
+        }]
 
         os.makedirs(self.stg_dir)
         with open(self.outpath1, 'wb+') as f:

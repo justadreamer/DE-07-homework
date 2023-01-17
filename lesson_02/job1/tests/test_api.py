@@ -1,19 +1,17 @@
-"""
-Tests api.py
-# TODO: write tests
-"""
 from unittest import TestCase, mock
 from lesson_02.job1.api import get_sales
 import requests
 from lesson_02.job1.tests.common import TEST_TOKEN
 
+
 class MockResponse:
     def __init__(self, json_data, status_code=200):
         self.json_data = json_data
-        self.status_code = 200
+        self.status_code = status_code
 
     def json(self):
         return self.json_data
+
 
 class GetSalesTestCase(TestCase):
     """
@@ -47,7 +45,9 @@ class GetSalesTestCase(TestCase):
 
         requests.get = mock.MagicMock(side_effect=response)
         result = get_sales('2022-12-15', auth_token=TEST_TOKEN)
-        requests.get.assert_called_with('https://fake-api-vycpfa6oca-uc.a.run.app/sales', params={'date': '2022-12-15', 'page': 3}, headers={'Authorization': TEST_TOKEN})
+        requests.get.assert_called_with('https://fake-api-vycpfa6oca-uc.a.run.app/sales',
+                                        params={'date': '2022-12-15', 'page': 3},
+                                        headers={'Authorization': TEST_TOKEN})
         self.assertEqual(len(result), 6)
 
     def testNoneJsonResponse(self):
