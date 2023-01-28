@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from airflow.models import Variable
 from airflow import DAG
 from airflow.providers.http.operators.http import SimpleHttpOperator
 import json
@@ -14,7 +14,7 @@ DEFAULT_ARGS = {
 }
 
 DATE = "{{ execution_date | ds }}"
-BASE_DIR = "/tmp/sales"
+BASE_DIR = Variable.get('BASE_DIR_DOWNLOAD_LESSON_07')
 RAW_DIR = f'{BASE_DIR}/raw/{DATE}'
 STG_DIR = f'{BASE_DIR}/stg/{DATE}'
 HEADERS = {'Content-Type':'application/json'}
