@@ -30,8 +30,7 @@ FROM (SELECT CONCAT(a.first_name, ' ', a.last_name) actor,
                INNER JOIN inventory i ON i.film_id = fa.film_id
                INNER JOIN rental r ON r.inventory_id = i.inventory_id
       GROUP BY actor
-      ORDER BY rentals DESC
-      LIMIT 10) temp;
+      ORDER BY rentals DESC LIMIT 10) temp;
 
 
 
@@ -50,8 +49,7 @@ FROM (SELECT c.name        category,
                INNER JOIN rental r ON r.inventory_id = i.inventory_id
                INNER JOIN payment p ON p.rental_id = r.rental_id
       GROUP BY category
-      ORDER BY total_amount DESC
-      LIMIT 1) temp;
+      ORDER BY total_amount DESC LIMIT 1) temp;
 
 
 
@@ -64,7 +62,7 @@ FROM (SELECT c.name        category,
 SELECT f.title
 FROM film f
          LEFT JOIN inventory i ON i.film_id = f.film_id
-WHERE i.inventory_id is NULL;
+WHERE i.inventory_id IS NULL;
 
 /*
 5.
@@ -80,5 +78,4 @@ FROM (SELECT CONCAT(a.first_name, ' ', a.last_name) actor,
                INNER JOIN category c ON c.category_id = fc.category_id
       WHERE c.name = 'Children'
       GROUP BY actor
-      ORDER BY films DESC
-      LIMIT 3) temp;
+      ORDER BY films DESC LIMIT 3) temp;
