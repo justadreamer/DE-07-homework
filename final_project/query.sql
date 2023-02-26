@@ -2,7 +2,7 @@
 
 WITH t AS (
     SELECT upe.state,
-           COUNT(s.product_name) COUNT
+           COUNT(s._id) COUNT
     FROM `de-07-376021.silver.sales` AS s
         INNER JOIN `de-07-376021.gold.user_profiles_enriched` AS upe
     ON s.client_id = upe.client_id

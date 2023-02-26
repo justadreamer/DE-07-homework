@@ -5,6 +5,7 @@ from airflow.providers.google.cloud.operators.bigquery import \
     BigQueryInsertJobOperator
 from table_defs.sales_csv import sales_csv
 from config import *
+from table_defs.schema_fields import *
 
 
 dag = DAG(
@@ -19,15 +20,10 @@ dag = DAG(
 create_bronze_table = BigQueryCreateEmptyTableOperator(
     task_id="create_bronze_table",
     dag=dag,
+    project_id=PROJECT_ID,
     dataset_id="bronze",
     table_id="sales",
-    schema_fields=[
-        {'name': 'CustomerId', 'type': 'STRING', 'mode': 'REQUIRED'},
-        {'name': 'PurchaseDate', 'type': 'STRING', 'mode': 'REQUIRED'},
-        {'name': 'Product', 'type': 'STRING', 'mode': 'REQUIRED'},
-        {'name': 'Price', 'type': 'STRING', 'mode': 'REQUIRED'},
-        {'name': '_logical_date', 'type': 'DATE', 'mode': 'REQUIRED'},
-    ],
+    schema_fields=SALES_BRONZE_SCHEMA_FIELDS,
     time_partitioning={
         'type': 'DAY',
         'field': '_logical_date',
@@ -37,6 +33,7 @@ create_bronze_table = BigQueryCreateEmptyTableOperator(
 raw_to_bronze = BigQueryInsertJobOperator(
     task_id="raw_to_bronze",
     dag=dag,
+    project_id=PROJECT_ID,
     configuration={
         "query": {
             "query": "{% include 'sql/sales_raw_to_bronze.sql' %}",
@@ -55,14 +52,10 @@ raw_to_bronze = BigQueryInsertJobOperator(
 create_silver_table = BigQueryCreateEmptyTableOperator(
     task_id="create_silver_table",
     dag=dag,
+    project_id=PROJECT_ID,
     dataset_id="silver",
     table_id="sales",
-    schema_fields=[
-        {'name': 'client_id', 'type': 'INTEGER', 'mode': 'REQUIRED'},
-        {'name': 'purchase_date', 'type': 'DATE', 'mode': 'REQUIRED'},
-        {'name': 'product_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-        {'name': 'price', 'type': 'INTEGER', 'mode': 'REQUIRED'},
-    ],
+    schema_fields=SALES_SILVER_SCHEMA_FIELDS,
     time_partitioning={
         'type': 'DAY',
         'field': 'purchase_date',
@@ -72,6 +65,7 @@ create_silver_table = BigQueryCreateEmptyTableOperator(
 bronze_to_silver = BigQueryInsertJobOperator(
     task_id="bronze_to_silver",
     dag=dag,
+    project_id=PROJECT_ID,
     configuration={
         "query": {
             "query": "{% include 'sql/sales_bronze_to_silver.sql' %}",

@@ -8,6 +8,7 @@ INSERT `{{ params.project_id }}.bronze.sales` (
     Product,
     Price,
 
+    _id,
     _logical_date
 )
 SELECT
@@ -16,6 +17,7 @@ SELECT
     Product,
     Price,
 
+    GENERATE_UUID() AS _id,
     DATE('{{ds}}') as _logical_date
 FROM sales_csv
 ;

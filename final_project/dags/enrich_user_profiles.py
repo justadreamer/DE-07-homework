@@ -3,8 +3,8 @@ from airflow import DAG
 from airflow.providers.google.cloud.operators.bigquery import \
     BigQueryCreateEmptyTableOperator, \
     BigQueryInsertJobOperator
-from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
 from config import *
+from table_defs.schema_fields import *
 
 
 dag = DAG(
@@ -19,23 +19,16 @@ dag = DAG(
 create_gold_table = BigQueryCreateEmptyTableOperator(
     task_id="create_gold_table",
     dag=dag,
+    project_id=PROJECT_ID,
     dataset_id="gold",
     table_id="user_profiles_enriched",
-    schema_fields=[
-        {'name': 'client_id', 'type': 'INTEGER', 'mode': 'REQUIRED'},
-        {'name': 'first_name', 'type': 'STRING', 'mode': 'NULLABLE'},
-        {'name': 'last_name', 'type': 'STRING', 'mode': 'NULLABLE'},
-        {'name': 'email', 'type': 'STRING', 'mode': 'NULLABLE'},
-        {'name': 'phone_number', 'type': 'STRING', 'mode': 'NULLABLE'},
-        {'name': 'registration_date', 'type': 'DATE', 'mode': 'REQUIRED'},
-        {'name': 'birth_date', 'type': 'DATE', 'mode': 'NULLABLE'},
-        {'name': 'state', 'type': 'STRING', 'mode': 'NULLABLE'},
-    ]
+    schema_fields=USER_PROFILES_ENRICHED_SCHEMA,
 )
 
 enrich = BigQueryInsertJobOperator(
     task_id="enrich",
     dag=dag,
+    project_id=PROJECT_ID,
     configuration={
         "query": {
             "query": "{% include 'sql/enrich_user_profiles.sql' %}",
