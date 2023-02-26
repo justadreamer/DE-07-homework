@@ -43,7 +43,7 @@ create_bronze = BigQueryCreateEmptyDatasetOperator(
     dag=dag,
     project_id=PROJECT_ID,
     dataset_id="bronze",
-    location='EU'
+    location=LOCATION
 )
 
 create_silver = BigQueryCreateEmptyDatasetOperator(
@@ -51,7 +51,7 @@ create_silver = BigQueryCreateEmptyDatasetOperator(
     dag=dag,
     project_id=PROJECT_ID,
     dataset_id="silver",
-    location='EU'
+    location=LOCATION
 )
 
 create_gold = BigQueryCreateEmptyDatasetOperator(
@@ -59,7 +59,7 @@ create_gold = BigQueryCreateEmptyDatasetOperator(
     dag=dag,
     project_id=PROJECT_ID,
     dataset_id="gold",
-    location='EU'
+    location=LOCATION
 )
 
 delete_bronze >> create_bronze
