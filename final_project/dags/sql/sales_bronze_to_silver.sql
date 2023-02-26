@@ -9,7 +9,7 @@ INSERT `{{ params.project_id }}.silver.sales` (
     price
 )
 SELECT
-    CustomerId as client_id,
+    CAST(CustomerId AS INTEGER) as client_id,
     _logical_date as purchase_date,
     Product as product_name,
     CAST(RTRIM(RTRIM(Price, 'USD'), '$') AS INTEGER) AS price

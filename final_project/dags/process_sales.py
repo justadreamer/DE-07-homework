@@ -51,7 +51,7 @@ raw_to_bronze = BigQueryInsertJobOperator(
     dag=dag,
     configuration={
         "query": {
-            "query": "{% include 'sql/raw_to_bronze.sql' %}",
+            "query": "{% include 'sql/sales_raw_to_bronze.sql' %}",
             "useLegacySql": False,
             "tableDefinitions": {
                 "sales_csv": sales_csv,
@@ -70,7 +70,7 @@ create_silver_table = BigQueryCreateEmptyTableOperator(
     dataset_id="silver",
     table_id="sales",
     schema_fields=[
-        {'name': 'client_id', 'type': 'STRING', 'mode': 'REQUIRED'},
+        {'name': 'client_id', 'type': 'INTEGER', 'mode': 'REQUIRED'},
         {'name': 'purchase_date', 'type': 'DATE', 'mode': 'REQUIRED'},
         {'name': 'product_name', 'type': 'STRING', 'mode': 'REQUIRED'},
         {'name': 'price', 'type': 'INTEGER', 'mode': 'REQUIRED'},
@@ -86,7 +86,7 @@ bronze_to_silver = BigQueryInsertJobOperator(
     dag=dag,
     configuration={
         "query": {
-            "query": "{% include 'sql/bronze_to_silver.sql' %}",
+            "query": "{% include 'sql/sales_bronze_to_silver.sql' %}",
             "useLegacySql": False,
         }
     },
