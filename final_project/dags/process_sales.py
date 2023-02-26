@@ -34,10 +34,10 @@ create_bronze_table = BigQueryCreateEmptyTableOperator(
     dataset_id="bronze",
     table_id="sales",
     schema_fields=[
-        {'name': 'customer_id', 'type': 'STRING', 'mode': 'REQUIRED'},
-        {'name': 'purchase_date', 'type': 'STRING', 'mode': 'REQUIRED'},
-        {'name': 'product', 'type': 'STRING', 'mode': 'REQUIRED'},
-        {'name': 'price', 'type': 'STRING', 'mode': 'REQUIRED'},
+        {'name': 'CustomerId', 'type': 'STRING', 'mode': 'REQUIRED'},
+        {'name': 'PurchaseDate', 'type': 'STRING', 'mode': 'REQUIRED'},
+        {'name': 'Product', 'type': 'STRING', 'mode': 'REQUIRED'},
+        {'name': 'Price', 'type': 'STRING', 'mode': 'REQUIRED'},
         {'name': '_logical_date', 'type': 'DATE', 'mode': 'REQUIRED'},
     ],
     time_partitioning={
@@ -70,9 +70,9 @@ create_silver_table = BigQueryCreateEmptyTableOperator(
     dataset_id="silver",
     table_id="sales",
     schema_fields=[
-        {'name': 'customer_id', 'type': 'STRING', 'mode': 'REQUIRED'},
+        {'name': 'client_id', 'type': 'STRING', 'mode': 'REQUIRED'},
         {'name': 'purchase_date', 'type': 'DATE', 'mode': 'REQUIRED'},
-        {'name': 'product', 'type': 'STRING', 'mode': 'REQUIRED'},
+        {'name': 'product_name', 'type': 'STRING', 'mode': 'REQUIRED'},
         {'name': 'price', 'type': 'INTEGER', 'mode': 'REQUIRED'},
     ],
     time_partitioning={

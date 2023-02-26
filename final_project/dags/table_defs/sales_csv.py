@@ -3,22 +3,22 @@ sales_csv = {
     "schema": {
         "fields": [
             {
-                "name": "customer_id",
+                "name": "CustomerId",
                 "type": "STRING",
                 "mode": "NULLABLE"
             },
             {
-                "name": "purchase_date",
+                "name": "PurchaseDate",
                 "type": "STRING",
                 "mode": "NULLABLE"
             },
             {
-                "name": "product",
+                "name": "Product",
                 "type": "STRING",
                 "mode": "NULLABLE"
             },
             {
-                "name": "price",
+                "name": "Price",
                 "type": "STRING",
                 "mode": "NULLABLE"
             },
